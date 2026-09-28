@@ -12,8 +12,9 @@ each complete source recording once toward -23 LUFS with peak safety before
 placing it there. Windows are intentionally not loudness-normalized
 individually, so within-song dynamics are preserved.
 
-Download the Gramophone Record Noise Dataset separately and pass the folder
-containing its WAV files with `--noise-dir`.
+Download the
+[Gramophone Record Noise Dataset](https://github.com/eloimoliner/gramophone-record-noise-dataset)
+separately and pass the folder containing its WAV files with `--noise-dir`.
 
 For FOS data, provide a tab-separated manifest with one row per WAV and these
 columns:

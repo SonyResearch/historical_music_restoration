@@ -17,7 +17,7 @@ checkpoints/samecfm_40m_fos.pt
 Expected SHA-256:
 
 ```text
-dcf0100ed1268201bc5e0db134d1d9677e32118b75a10e2d1d211d3d12dad4ca
+2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3
 ```
 
 Override `CHECKPOINT`, `CHECKPOINT_URL`, or `CHECKPOINT_SHA256` when

@@ -105,8 +105,9 @@ SAME-L is distributed under the Stability AI Community License. Review and accep
 ## Checkpoint setup
 
 Checkpoint binaries are kept outside Git and distributed as a GitHub Release
-asset, following the approach used by BEHM-GAN. Download and SHA-256 verify the
-paper checkpoint with:
+asset, following the approach used by BEHM-GAN. The asset is also available on
+the [v1.0.0 release page](https://github.com/stevencho24/End-to-End_historical_music_restoration/releases/tag/v1.0.0).
+Download and SHA-256 verify it with:
 
 ```bash
 bash prepare_data.sh
@@ -120,7 +121,7 @@ checkpoints/samecfm_40m_fos.pt
 
 See [`checkpoints/README.md`](checkpoints/README.md) for the release convention.
 Its SHA-256 is
-`dcf0100ed1268201bc5e0db134d1d9677e32118b75a10e2d1d211d3d12dad4ca`.
+`2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3`.
 The checkpoint contains the architecture configuration, EMA denoiser,
 training-set latent mean/std, and all states needed for inference.
 
