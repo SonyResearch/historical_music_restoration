@@ -23,3 +23,12 @@ Expected SHA-256:
 Override `CHECKPOINT`, `CHECKPOINT_URL`, or `CHECKPOINT_SHA256` when
 mirroring the release. The file is intentionally excluded from ordinary Git
 history.
+
+The released EMA checkpoint can also initialize a new training run:
+
+```bash
+INIT_CHECKPOINT=checkpoints/samecfm_40m_fos.pt \
+scripts/train_samecfm40_fos_4gpu.sh
+```
+
+This is a fresh optimizer run, not an optimizer-state resume.

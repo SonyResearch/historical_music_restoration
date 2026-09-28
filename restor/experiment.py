@@ -74,12 +74,21 @@ class Experiment:
         missing = [k for k in cls.REQUIRED_KEYS if k not in cfg]
         if missing:
             raise ValueError(f"Config missing required sections: {missing}")
-        root = cfg["dataset"]["root"]
-        if not os.path.isdir(root):
-            raise FileNotFoundError(
-                f"Dataset root '{root}' does not exist. "
-                f"Create it and add song folders before training."
-            )
+        precompute = cfg.get("precompute", {})
+        if precompute.get("enabled", False):
+            for key in ("train_dir", "validate_dir", "ground_truth_dir"):
+                path = precompute.get(key)
+                if not path or not os.path.isdir(path):
+                    raise FileNotFoundError(
+                        f"Precomputed dataset directory is unavailable: {key}={path!r}"
+                    )
+        else:
+            root = cfg["dataset"]["root"]
+            if not os.path.isdir(root):
+                raise FileNotFoundError(
+                    f"Dataset root '{root}' does not exist. "
+                    f"Create it and add song folders before training."
+                )
 
     # -------------------------------------------------------- tensorboard --
 

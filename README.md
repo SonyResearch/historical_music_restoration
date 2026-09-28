@@ -55,6 +55,11 @@ distributions are in
 | 4 | Smooth band-pass | Low cutoff `N(100,50)` Hz clipped to [40,250]; high cutoff `N(3200,850)` Hz clipped to [2000,5500]; low slope `N(18,8)` dB/oct clipped to [6,48]; high slope `N(30,10)` dB/oct clipped to [12,60] |
 | 5 | Real gramophone surface noise | Random segment from the Gramophone Record Noise Dataset; SNR `N(11,4.5)` dB clipped to [2,20] dB |
 
+Stage 5 uses Eloi Moliner's
+[Gramophone Record Noise Dataset](https://github.com/eloimoliner/gramophone-record-noise-dataset).
+Clone or download that repository and pass its WAV directory to
+`main.py precompute --noise-dir`.
+
 The two EQ curves are independently sampled and use log-frequency
 interpolation. They form a Wiener–Hammerstein sequence around the static
 nonlinearity. Filtering is zero phase to retain temporal alignment between
@@ -180,6 +185,21 @@ directories from the leak-free song-level FOS split. The removed
 `StemMixDataset` path belonged to early arbitrary-stem-combination experiments;
 the final submission trains only from the fixed full-orchestra and section
 mixtures. Use `RESUME=1` to resume the same experiment.
+
+To start a new fine-tuning run from the downloadable paper checkpoint, first
+run `bash prepare_data.sh`, then set:
+
+```bash
+INIT_CHECKPOINT=checkpoints/samecfm_40m_fos.pt \
+PRECOMPUTED_ROOT=data/fos_precomputed \
+FOS_CLEAN_ROOT=data/public_classical_orchestral_plus_sections \
+scripts/train_samecfm40_fos_4gpu.sh
+```
+
+This loads the released EMA into both the trainable denoiser and its EMA copy.
+It intentionally starts a fresh optimizer at step zero. `RESUME=1` remains
+the exact optimizer-level continuation path for checkpoints created by the
+new experiment.
 
 The published Zenodo archive below is the unpaired historical **evaluation**
 set, not the clean FOS training corpus and not the paired latent cache.

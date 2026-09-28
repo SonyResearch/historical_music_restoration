@@ -452,9 +452,11 @@ class Trainer:
             weight_decay=weight_decay,
             betas=betas,
         )
-        self.corruptor = AudioCorruptor(self.cfg["corruption"])
-        if _env_flag("RESTOR_PRELOAD_NOISE_GPU", False):
-            self.corruptor.preload_noise(self.device, self.sample_rate)
+        self.corruptor = None
+        if not self._precomp_fetch():
+            self.corruptor = AudioCorruptor(self.cfg["corruption"])
+            if _env_flag("RESTOR_PRELOAD_NOISE_GPU", False):
+                self.corruptor.preload_noise(self.device, self.sample_rate)
 
         n_params = sum(p.numel() for p in self.denoiser.parameters())
         if self.codec is None:
@@ -559,6 +561,7 @@ class Trainer:
         self._build_logging()
         ckpt_path = self.exp.find_latest_checkpoint()
         if ckpt_path is None:
+            self._try_initialize_from_release()
             return
 
         # Checkpoints contain model/optimizer state for every denoiser. DDPM
@@ -604,6 +607,54 @@ class Trainer:
         self.optimizer.load_state_dict(ckpt["optimizer"])
         self.global_step = ckpt.get("global_step", 0)
         print(f"Resumed from {ckpt_path} at step {self.global_step}")
+
+    def _try_initialize_from_release(self):
+        """Initialize a new optimization run from a public EMA checkpoint."""
+        checkpoint_path = self.cfg.get("training", {}).get("init_checkpoint")
+        if not checkpoint_path:
+            return
+        if not os.path.isfile(checkpoint_path):
+            raise FileNotFoundError(
+                f"Training initialization checkpoint not found: {checkpoint_path}"
+            )
+        checkpoint = torch.load(
+            checkpoint_path, map_location=self.device, weights_only=True
+        )
+        released_type = checkpoint.get("config", {}).get("denoiser", {}).get("type")
+        active_type = self.cfg.get("denoiser", {}).get("type")
+        if released_type and released_type != active_type:
+            raise ValueError(
+                "Initialization checkpoint/config denoiser mismatch: "
+                f"{released_type!r} != {active_type!r}"
+            )
+
+        if "ema_denoiser" in checkpoint and self.ema_denoiser is not None:
+            ema_state = checkpoint["ema_denoiser"]
+            model_state = {
+                key.removeprefix("module."): value
+                for key, value in ema_state.items()
+                if key.startswith("module.")
+            }
+            self.denoiser.load_state_dict(model_state)
+            self.ema_denoiser.load_state_dict(ema_state)
+        elif "denoiser" in checkpoint:
+            self.denoiser.load_state_dict(checkpoint["denoiser"])
+            if self.ema_denoiser is not None:
+                self.ema_denoiser.module.load_state_dict(checkpoint["denoiser"])
+        else:
+            raise ValueError(
+                "Initialization checkpoint has neither EMA nor raw denoiser weights"
+            )
+
+        # This is initialization, not an optimizer resume: the new experiment
+        # starts at step zero with a fresh optimizer. Latent statistics remain
+        # those of the supplied precomputed cache so decoding/logging matches
+        # that cache's normalization.
+        self.global_step = 0
+        print(
+            f"Initialized denoiser and EMA from {checkpoint_path}; "
+            "optimizer and global step start fresh."
+        )
 
     def _ensure_ddpm_latent_stats(self):
         """Compute clean SAME latent stats for online latent-model normalization."""
@@ -2185,6 +2236,10 @@ class Trainer:
 
     def _corrupt_batch(self, audio):
         """Apply configured waveform degradations to each item in a batch."""
+        if self.corruptor is None:
+            raise RuntimeError(
+                "Waveform corruption is unavailable in precomputed-data mode"
+            )
         # AudioCorruptor.corrupt_batch is the optimized path: batched segment
         # FFT filters on audio.device, with per-item random filter parameters.
         # Older corruptors can still fall back to the per-sample __call__ loop.

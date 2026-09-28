@@ -36,6 +36,13 @@ resume_args=()
 if [[ "${RESUME:-0}" =~ ^(1|true|yes)$ ]]; then
     resume_args+=(--resume)
 fi
+if [[ -n "${INIT_CHECKPOINT:-}" ]]; then
+    if [[ ! -f "$INIT_CHECKPOINT" ]]; then
+        echo "Initialization checkpoint not found: $INIT_CHECKPOINT" >&2
+        exit 1
+    fi
+    resume_args+=(--init-checkpoint "$INIT_CHECKPOINT")
+fi
 
 exec "$TORCHRUN_BIN" --standalone --nproc_per_node="$NPROC_PER_NODE" \
     main.py --exp-root "$EXP_ROOT" train \

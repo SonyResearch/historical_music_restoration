@@ -24,6 +24,12 @@ def train(args):
     with open(args.config) as f:
         cfg = yaml.safe_load(f)
     _parse_overrides(args.override, cfg)
+    if args.resume and args.init_checkpoint:
+        raise ValueError("--resume and --init-checkpoint are mutually exclusive")
+    if args.init_checkpoint:
+        cfg.setdefault("training", {})["init_checkpoint"] = os.path.abspath(
+            args.init_checkpoint
+        )
 
     distributed = "RANK" in os.environ and "WORLD_SIZE" in os.environ
     if distributed:
@@ -154,6 +160,10 @@ def main():
     p_train.add_argument("--config", default="config/samecfm40_fms.yaml")
     p_train.add_argument("--resume", action="store_true",
                          help="Resume from latest checkpoint (uses saved config)")
+    p_train.add_argument(
+        "--init-checkpoint", default=None,
+        help="Initialize a new run from a released EMA checkpoint",
+    )
     p_train.add_argument("--override", nargs="*", default=[],
                          help="dot.key=value config overrides (ignored on --resume)")
 
