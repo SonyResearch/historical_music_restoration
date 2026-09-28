@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download the paper checkpoint from the GitHub Release, as in BEHM-GAN.
+# Download and verify the paper checkpoint from the GitHub Release.
 set -Eeuo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -2,8 +2,6 @@ import type { AudioCondition, AudioExample } from "@/types/audio";
 
 const historicalConditions = (id: string): AudioCondition[] => [
   { id: "input", label: "Historical Input", shortLabel: "Input", src: `/audio/historical/${id}/input.mp3` },
-  { id: "behm-p", label: "BEHM-GAN pretrained", shortLabel: "BEHM-P", src: `/audio/historical/${id}/behm-p.mp3` },
-  { id: "behm-fos", label: "BEHM-GAN FOS", shortLabel: "BEHM-FOS", src: `/audio/historical/${id}/behm-fos.mp3` },
   { id: "babe2-p", label: "BABE2 pretrained", shortLabel: "BABE2-P", src: `/audio/historical/${id}/babe2-p.mp3` },
   { id: "babe2-fos", label: "BABE2 FOS", shortLabel: "BABE2-FOS", src: `/audio/historical/${id}/babe2-fos.mp3` },
   { id: "samecfm", label: "SAMECFM (Ours)", shortLabel: "SAMECFM", src: `/audio/historical/${id}/samecfm.mp3`, isOurs: true },

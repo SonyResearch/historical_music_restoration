@@ -10,6 +10,33 @@ This repository studies historical music restoration as conditional flow matchin
 
 **[Interactive demo](https://full-mix-historical-music-restorati.vercel.app)** · **[Paper PDF](paper/full_mix_historical_music_restoration.pdf)** · **[Published dataset](https://doi.org/10.5281/zenodo.22737610)**
 
+## Quickstart: restore one file
+
+Python 3.11 and an NVIDIA GPU are recommended. Accept the
+[SAME-L license](https://huggingface.co/stabilityai/SAME-L), then run:
+
+```bash
+git clone https://github.com/stevencho24/End-to-End_historical_music_restoration.git
+cd End-to-End_historical_music_restoration
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -e .
+bash prepare_data.sh
+scripts/infer_samecfm40_fos.sh path/to/input.wav output/restored
+```
+
+`prepare_data.sh` downloads the v1.0.0 paper checkpoint, resumes interrupted
+downloads, and verifies its SHA-256. The restored WAV is written below
+`output/restored/`. SAME-L downloads automatically on first use.
+
+| Goal | Command |
+|---|---|
+| Restore a file or directory | `scripts/infer_samecfm40_fos.sh INPUT OUTPUT_DIR` |
+| Build the training cache | `python main.py precompute ...` |
+| Train on one GPU | `scripts/train_samecfm40_fos.sh` |
+| Reproduce the paper launch on four GPUs | `scripts/train_samecfm40_fos_4gpu.sh` |
+
 ## Method
 
 ```text
@@ -76,7 +103,7 @@ each degraded input and its clean target. White-noise augmentation is not used.
 ├── paper/           # Paper PDF
 ├── restor/          # Model, corruption, training, and inference implementation
 ├── results/         # Aggregate, anonymous evaluation results
-├── scripts/         # Dataset download, four-GPU training, and inference launchers
+├── scripts/         # Download, inference, precompute, and training launchers
 ├── main.py          # Training and inference entry point
 └── pyproject.toml
 ```
@@ -95,75 +122,28 @@ npm run dev
 
 For Vercel, import this repository and set the project **Root Directory** to `demo`. No server, environment variables, or runtime inference are required.
 
-## Installation
+## Inference options
 
-Python 3.11 and a CUDA-capable PyTorch environment are recommended.
+The launcher accepts one file or recursively processes a directory. It uses the
+paper settings: ten uniform Euler steps, CFG 1.0, and seed 42. Override
+`CHECKPOINT`, `DEVICE`, `CFM_STEPS`, `SEED`, `CHUNK_SEC`, or `OVERLAP`
+with environment variables. Arbitrary-length input is converted to 44.1-kHz
+mono and processed with overlap-add.
 
-```bash
-git clone https://github.com/stevencho24/End-to-End_historical_music_restoration.git
-cd End-to-End_historical_music_restoration
-pip install -e .
-```
-
-SAME-L is distributed under the Stability AI Community License. Review and accept its terms before use.
-
-## Checkpoint setup
-
-Checkpoint binaries are kept outside Git and distributed as a GitHub Release
-asset, following the approach used by BEHM-GAN. The asset is also available on
-the [v1.0.0 release page](https://github.com/stevencho24/End-to-End_historical_music_restoration/releases/tag/v1.0.0).
-Download and SHA-256 verify it with:
-
-```bash
-bash prepare_data.sh
-```
-
-This creates:
-
-```text
-checkpoints/samecfm_40m_fos.pt
-```
-
-See [`checkpoints/README.md`](checkpoints/README.md) for the release convention.
-Its SHA-256 is
+The checkpoint is also available on the
+[v1.0.0 release page](https://github.com/stevencho24/End-to-End_historical_music_restoration/releases/tag/v1.0.0).
+Its expected SHA-256 is
 `2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3`.
-The checkpoint contains the architecture configuration, EMA denoiser,
-training-set latent mean/std, and all states needed for inference.
 
-## Inference
+## Precompute training pairs
 
-The paper evaluation uses ten uniform Euler steps, CFG scale 1.0, and seed 42.
-For one arbitrary audio file:
+Put clean 44.1-kHz WAV files in one directory. Then download the stage-5 noise
+dataset and build the cache:
 
 ```bash
-scripts/infer_samecfm40_fos.sh path/to/historical_input.wav output/restored
-```
+git clone https://github.com/eloimoliner/gramophone-record-noise-dataset \
+  data/gramophone_record_noise
 
-For a directory, the same launcher recursively restores every supported audio
-file while preserving the input subdirectories:
-
-```bash
-scripts/infer_samecfm40_fos.sh path/to/input_dataset output/samecfm40_fos
-```
-
-Set `CHECKPOINT`, `DEVICE`, `CFM_STEPS`, `SEED`, `CHUNK_SEC`, or `OVERLAP` to
-override defaults. Arbitrary-length input is processed with overlap-add and is
-converted to 44.1-kHz mono before SAME-L encoding.
-
-[`restor/inference.py`](restor/inference.py) is the implementation behind the
-public `main.py infer` command. `trainer.py` has a matching internal sampler
-for validation/TensorBoard audio, which is why research runs may appear to
-perform inference from the Trainer without importing `inference.py`.
-
-## Training
-
-The paper's Full-Orchestra + Section configuration is
-[`config/samecfm40_fos.yaml`](config/samecfm40_fos.yaml). It is the template
-for the codec, CFM/DiT, optimizer, inference schedule, and five-stage
-degradation. The exact final launch used four DDP ranks, a per-GPU batch of 24
-(global batch 96), and precomputed five-second latent pairs:
-
-```bash
 python main.py precompute \
   --source-dir data/public_classical_orchestral_plus_sections \
   --manifest data/public_classical_orchestral_plus_sections/MANIFEST.tsv \
@@ -171,38 +151,38 @@ python main.py precompute \
   --output-root data/fos_precomputed
 ```
 
-See [`docs/precompute.md`](docs/precompute.md) for source preparation, manifest
-schema, defaults, and split guarantees. Then run:
+The command requires one CUDA GPU and writes `train/`, `validate/`, and
+`ground_truth/`. Omit `--manifest` for unrelated files; use it to keep
+aligned full-mix and section views in the same song-level split. See
+[`docs/precompute.md`](docs/precompute.md) for its simple TSV schema and all
+defaults.
+
+## Train
+
+The default launcher is one-GPU friendly and starts with batch size 4:
 
 ```bash
-PRECOMPUTED_ROOT=data/fos_precomputed \
-FOS_CLEAN_ROOT=data/public_classical_orchestral_plus_sections \
-scripts/train_samecfm40_fos_4gpu.sh
+scripts/train_samecfm40_fos.sh
 ```
 
-`PRECOMPUTED_ROOT` must contain `train/`, `validate/`, and `ground_truth/`
-directories from the leak-free song-level FOS split. The removed
-`StemMixDataset` path belonged to early arbitrary-stem-combination experiments;
-the final submission trains only from the fixed full-orchestra and section
-mixtures. Use `RESUME=1` to resume the same experiment.
-
-To start a new fine-tuning run from the downloadable paper checkpoint, first
-run `bash prepare_data.sh`, then set:
+To initialize a new run from the downloaded paper weights:
 
 ```bash
 INIT_CHECKPOINT=checkpoints/samecfm_40m_fos.pt \
-PRECOMPUTED_ROOT=data/fos_precomputed \
-FOS_CLEAN_ROOT=data/public_classical_orchestral_plus_sections \
+scripts/train_samecfm40_fos.sh
+```
+
+Use `BATCH_SIZE=1` if GPU memory is limited, `RESUME=1` to continue the
+latest checkpoint from the same experiment, or set `NPROC_PER_NODE` and
+`CUDA_VISIBLE_DEVICES` for multiple GPUs. The exact paper launch remains:
+
+```bash
 scripts/train_samecfm40_fos_4gpu.sh
 ```
 
-This loads the released EMA into both the trainable denoiser and its EMA copy.
-It intentionally starts a fresh optimizer at step zero. `RESUME=1` remains
-the exact optimizer-level continuation path for checkpoints created by the
-new experiment.
-
-The published Zenodo archive below is the unpaired historical **evaluation**
-set, not the clean FOS training corpus and not the paired latent cache.
+The downloadable checkpoint initializes the model and EMA for a new optimizer
+run. It is not an optimizer-level resume checkpoint. The published Zenodo
+archive below is an unpaired evaluation set, not training data.
 
 ## Evaluation
 

@@ -31,8 +31,8 @@ gating — every training pair is a clean↔degraded pair):
 
     Stage 4 – Final bandpass
         Hard bandwidth enforcement *outside* the range of the EQ control nodes.
-        Low cut (~120 Hz) removes subsonic rumble; high cut (~3 kHz) mirrors
-        BEHM-GAN's gramophone lowpass prior: N(3000 Hz, 300 Hz).
+        Low cut (~120 Hz) removes subsonic rumble; the gramophone high cut is
+        sampled from N(3000 Hz, 300 Hz).
         Roll-off is smooth (dB/octave) rather than brick-wall to avoid ringing
         artefacts in paired training data. Because EQ₂ and bandpass are
         adjacent linear stages, their masks are multiplied and applied in one
@@ -54,7 +54,6 @@ References:
       https://arxiv.org/pdf/2504.04751
   - Gramophone Record Noise Dataset:
       https://github.com/eloimoliner/gramophone-record-noise-dataset
-  - BEHM-GAN: Extending Historical Music on Gramophone Using GANs (Shi et al.)
 """
 import os
 import random
@@ -192,8 +191,7 @@ def _make_bandpass_mask(
         f > high_cutoff : gain = −high_slope * log₂(f / high_cutoff)  [dB]  (negative)
 
     Smooth slopes (not brick-wall) avoid ringing artefacts in training pairs.
-    The high-cut prior N(3000 Hz, 300 Hz) is taken directly from BEHM-GAN's
-    published gramophone lowpass analysis.
+    The high-cut prior is N(3000 Hz, 300 Hz).
 
     Config keys (Gaussian: mean, std, min, max for each parameter):
         low_cutoff_{mean,std,min,max}_hz
@@ -511,8 +509,7 @@ class AudioCorruptor:
         # ── Stage 4: Final bandpass ────────────────────────────────────────────
         # Hard bandwidth enforcement *outside* the EQ-node range, after the full
         # WH coloration chain.  Low cut removes subsonic rumble (< ~120 Hz);
-        # high cut enforces the gramophone bandwidth limit (N(3000 Hz, 300 Hz)),
-        # taken directly from BEHM-GAN's published lowpass prior.
+        # high cut enforces the gramophone bandwidth limit (N(3000 Hz, 300 Hz)).
         #
         # EQ₂ and bandpass are adjacent linear filters, so their magnitude
         # responses can be multiplied and applied in one FFT pass.

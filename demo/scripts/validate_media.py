@@ -23,8 +23,8 @@ def digest(path: Path) -> str:
 
 def main() -> None:
     records = json.loads(MANIFEST.read_text())
-    if len(records) != 36:
-        raise RuntimeError(f"Expected 36 audio assets, found {len(records)}")
+    if len(records) != 24:
+        raise RuntimeError(f"Expected 24 audio assets, found {len(records)}")
 
     failures: list[str] = []
     for record in records:
@@ -55,7 +55,7 @@ def main() -> None:
 
     if failures:
         raise RuntimeError("Media validation failed:\n" + "\n".join(failures))
-    print("Validated 36 MP3 assets: hashes, decode, 44.1 kHz, stereo, duration, non-silence, and peak safety.")
+    print("Validated 24 MP3 assets: hashes, decode, 44.1 kHz, stereo, duration, non-silence, and peak safety.")
 
 
 if __name__ == "__main__":

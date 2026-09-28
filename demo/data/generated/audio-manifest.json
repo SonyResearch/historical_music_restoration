@@ -48,30 +48,6 @@
     "duration_seconds": 5.041633
   },
   {
-    "example": "ballet-egyptian",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_ballet-egyptian-nos-1-and-2_american-symphony-orchestra-alexandre-luigini_gbia0078132a.flac",
-    "source_offset_seconds": 110.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/ballet-egyptian/behm-p.mp3",
-    "sha256": "e6fb76cc50a03072ed46f56889217f8298c88ab86500b19ad5c98e685a7927e7",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "ballet-egyptian",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_ballet-egyptian-nos-1-and-2_american-symphony-orchestra-alexandre-luigini_gbia0078132a.flac",
-    "source_offset_seconds": 110.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/ballet-egyptian/behm-fos.mp3",
-    "sha256": "bc2b4dc54322014bb38c491acead5d65a018885ee38511579a92499d4de11f1c",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
     "example": "rigoletto",
     "condition": "input",
     "source": "/data/steven/restor/reports/listening_test_table5/golisten_babe2_25/staged_audio/orchestra_rigoletto_75/INPUT.wav",
@@ -115,30 +91,6 @@
     "applied_gain": 0.891250938,
     "output": "public/audio/historical/rigoletto/samecfm.mp3",
     "sha256": "fef7de6b017db6140b43d792f5b0a19c007b55fa30ee44ddc8570a516c163958",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "rigoletto",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_rigoletto-selection-part-1_american-symphony-orchestra-g-verdi_gbia0298845a.flac",
-    "source_offset_seconds": 75.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/rigoletto/behm-p.mp3",
-    "sha256": "0d13734f8488110fcc4ff330f8e1da0bff059b49b76ce2e74932c961e4691a2a",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "rigoletto",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_rigoletto-selection-part-1_american-symphony-orchestra-g-verdi_gbia0298845a.flac",
-    "source_offset_seconds": 75.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/rigoletto/behm-fos.mp3",
-    "sha256": "2ed714f6caaa86d320f8badc9c62f785dad0d2eac27569cdc269721fbf92271d",
     "sample_rate_hz": 44100,
     "channels": 2,
     "duration_seconds": 5.041633
@@ -192,30 +144,6 @@
     "duration_seconds": 5.041633
   },
   {
-    "example": "hungarian-dance",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_hungarian-dance-no-5_philadelphia-symphony-orchestra-brahms-leopold-stokowski_gbia0183029a.flac",
-    "source_offset_seconds": 95.0,
-    "applied_gain": 0.891250938,
-    "output": "public/audio/historical/hungarian-dance/behm-p.mp3",
-    "sha256": "577514df48fc602a294769a8d6620f157de6860bd4cae88f21ce7ab0bde3be64",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "hungarian-dance",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_hungarian-dance-no-5_philadelphia-symphony-orchestra-brahms-leopold-stokowski_gbia0183029a.flac",
-    "source_offset_seconds": 95.0,
-    "applied_gain": 0.891250938,
-    "output": "public/audio/historical/hungarian-dance/behm-fos.mp3",
-    "sha256": "959f004e47938b011523e04960aa599072a54e916b489dbdebe5c98aab15b44c",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
     "example": "minuetto",
     "condition": "input",
     "source": "/data/steven/restor/reports/listening_test_table5/golisten_babe2_25/staged_audio/light_minuetto_80/INPUT.wav",
@@ -259,30 +187,6 @@
     "applied_gain": 0.891250938,
     "output": "public/audio/historical/minuetto/samecfm.mp3",
     "sha256": "0aec7feac992e6330907c5ae2dac108a19bc65ea722972f35c31fcdad113bddc",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "minuetto",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_minuetto_american-symphony-orchestra-g-bolzoni_gbia0078138a.flac",
-    "source_offset_seconds": 80.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/minuetto/behm-p.mp3",
-    "sha256": "f1ffbbcfc175554d141587a51eb3985002e14acd99e55038e80e873096b86ac8",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "minuetto",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_minuetto_american-symphony-orchestra-g-bolzoni_gbia0078138a.flac",
-    "source_offset_seconds": 80.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/minuetto/behm-fos.mp3",
-    "sha256": "4bad53261a824885ae09cbcf1947c0609898d00ae4e78593bc464e708d9e7bc8",
     "sample_rate_hz": 44100,
     "channels": 2,
     "duration_seconds": 5.041633
@@ -336,30 +240,6 @@
     "duration_seconds": 5.041633
   },
   {
-    "example": "scented-violets",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_scented-violets_peerless-orchestra-jules-reynard_gbia0178673b.flac",
-    "source_offset_seconds": 50.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/scented-violets/behm-p.mp3",
-    "sha256": "b3039d2327244cca74de11314c1ff15c7f961e81956d64191967d234d343651f",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "scented-violets",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_scented-violets_peerless-orchestra-jules-reynard_gbia0178673b.flac",
-    "source_offset_seconds": 50.0,
-    "applied_gain": 0.87342591924,
-    "output": "public/audio/historical/scented-violets/behm-fos.mp3",
-    "sha256": "db5b25e537b26167d1e8ca9bd24c44d6c62d899a45385a16aa6f049d44604ba4",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
     "example": "lady-bird",
     "condition": "input",
     "source": "/data/steven/restor/reports/listening_test_table5/golisten_babe2_25/staged_audio/light_lady_bird_95/INPUT.wav",
@@ -403,30 +283,6 @@
     "applied_gain": 0.891250938,
     "output": "public/audio/historical/lady-bird/samecfm.mp3",
     "sha256": "e145825c430500c43db792e876df80e7ce7605264d2488fcf4a075c4dfd157ce",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "lady-bird",
-    "condition": "behm-p",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/denoiser_only_44k_compat/78_lady-bird-tango_the-peerless-orchestra-p-s-robinson_gbia3038426b.flac",
-    "source_offset_seconds": 95.0,
-    "applied_gain": 0.891250938,
-    "output": "public/audio/historical/lady-bird/behm-p.mp3",
-    "sha256": "291201d78f0a24f20b8fb89bbf525db4aad61e95956f6da5eb14da6694a353a1",
-    "sample_rate_hz": 44100,
-    "channels": 2,
-    "duration_seconds": 5.041633
-  },
-  {
-    "example": "lady-bird",
-    "condition": "behm-fos",
-    "source": "/data/steven/restor/IA_test_set_inference_outputs/behm/fms_leakless/78_lady-bird-tango_the-peerless-orchestra-p-s-robinson_gbia3038426b.flac",
-    "source_offset_seconds": 95.0,
-    "applied_gain": 0.891250938,
-    "output": "public/audio/historical/lady-bird/behm-fos.mp3",
-    "sha256": "13550f3f1aef3aeb0ca75ba12b286227c8f30e94e0c5082372123f26dc48542b",
     "sample_rate_hz": 44100,
     "channels": 2,
     "duration_seconds": 5.041633

@@ -1,7 +1,7 @@
 # Checkpoints
 
 This directory is the stable local destination for released model weights.
-Download the final paper model using the BEHM-GAN-style setup script:
+Download the final paper model using the checkpoint setup script:
 
 ```bash
 bash prepare_data.sh
@@ -28,7 +28,7 @@ The released EMA checkpoint can also initialize a new training run:
 
 ```bash
 INIT_CHECKPOINT=checkpoints/samecfm_40m_fos.pt \
-scripts/train_samecfm40_fos_4gpu.sh
+scripts/train_samecfm40_fos.sh
 ```
 
 This is a fresh optimizer run, not an optimizer-state resume.

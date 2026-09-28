@@ -43,8 +43,6 @@ Historical conditions use this convention:
 
 ```text
 public/audio/historical/example-id/input.mp3
-public/audio/historical/example-id/behm-p.mp3
-public/audio/historical/example-id/behm-fos.mp3
 public/audio/historical/example-id/babe2-p.mp3
 public/audio/historical/example-id/babe2-fos.mp3
 public/audio/historical/example-id/samecfm.mp3

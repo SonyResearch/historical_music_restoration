@@ -51,8 +51,12 @@ The output is directly compatible with:
 ```bash
 PRECOMPUTED_ROOT=data/fos_precomputed \
 FOS_CLEAN_ROOT=data/public_classical_orchestral_plus_sections \
-scripts/train_samecfm40_fos_4gpu.sh
+scripts/train_samecfm40_fos.sh
 ```
+
+This launcher uses one GPU and batch size 4 by default. Use
+`scripts/train_samecfm40_fos_4gpu.sh` for the paper's four-GPU, batch-24-per-GPU
+configuration.
 
 Precompute refuses nonempty output directories. Move or remove an incomplete
 cache before restarting. A successful run writes `_SUCCESS` last.

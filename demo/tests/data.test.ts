@@ -9,7 +9,7 @@ describe("published research data", () => {
     expect(historicalExamples).toHaveLength(6);
     expect(historicalExamples.filter((item) => item.category === "Full-Orchestra")).toHaveLength(3);
     expect(historicalExamples.filter((item) => item.category === "Light Orchestra")).toHaveLength(3);
-    expect(historicalExamples.every((item) => item.conditions.length === 6)).toBe(true);
+    expect(historicalExamples.every((item) => item.conditions.length === 4)).toBe(true);
   });
 
   it("matches the validated subjective sensitivity analysis", () => {
