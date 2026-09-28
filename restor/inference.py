@@ -71,7 +71,6 @@ class Inferencer:
             latent_dim,
             spectral_cfg=self.spectral_cfg,
         )
-        denoiser_state = ckpt["denoiser"]
         # Generative DDPM/CFM checkpoints sample with their EMA weights, just
         # like Trainer's TensorBoard audio path. AveragedModel stores them
         # beneath the ``module.`` prefix plus a non-model n_averaged buffer.
@@ -81,6 +80,8 @@ class Inferencer:
                 for key, value in ckpt["ema_denoiser"].items()
                 if key.startswith("module.")
             }
+        else:
+            denoiser_state = ckpt["denoiser"]
         self.denoiser.load_state_dict(denoiser_state)
         self.denoiser.to(self.device).eval()
         self.ddpm_buffers = None

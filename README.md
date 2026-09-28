@@ -5,8 +5,8 @@ Official implementation and evaluation resources for **End-to-End Historical Mus
 This repository studies historical music restoration as conditional flow matching in the continuous latent space of the frozen [SAME-L](https://huggingface.co/stabilityai/SAME-L) audio autoencoder. The proposed 40M-parameter model, **SAMECFM**, maps degraded historical-audio latents toward clean musical-audio latents and decodes the restored representation at 44.1 kHz.
 
 > **Release status:** implementation, current paper PDF, interactive demo,
-> aggregate subjective results, and the published test set are included. The
-> model-weight download URL/checksum and arXiv identifier are forthcoming.
+> aggregate subjective results, published test set, and SAMECFM-40M checkpoint
+> are included. The arXiv identifier is forthcoming.
 
 **[Interactive demo](https://full-mix-historical-music-restorati.vercel.app)** · **[Paper PDF](paper/full_mix_historical_music_restoration.pdf)** · **[Published dataset](https://doi.org/10.5281/zenodo.22737610)**
 
@@ -65,7 +65,7 @@ each degraded input and its clean target. White-noise augmentation is not used.
 ```text
 .
 ├── assets/          # Paper-ready qualitative waveform/spectrogram examples
-├── checkpoints/     # Checkpoint download instructions (forthcoming)
+├── checkpoints/     # Downloaded model checkpoint destination
 ├── config/          # Public SAMECFM-40M configuration
 ├── demo/            # Static Next.js paper site and synchronized audio examples
 ├── paper/           # Paper PDF
@@ -104,14 +104,23 @@ SAME-L is distributed under the Stability AI Community License. Review and accep
 
 ## Checkpoint setup
 
-Checkpoint binaries are intentionally kept outside Git. After downloading the
-released weight file, preserve this exact local name:
+Checkpoint binaries are kept outside Git and distributed as a GitHub Release
+asset, following the approach used by BEHM-GAN. Download and SHA-256 verify the
+paper checkpoint with:
+
+```bash
+bash prepare_data.sh
+```
+
+This creates:
 
 ```text
 checkpoints/samecfm_40m_fos.pt
 ```
 
 See [`checkpoints/README.md`](checkpoints/README.md) for the release convention.
+Its SHA-256 is
+`dcf0100ed1268201bc5e0db134d1d9677e32118b75a10e2d1d211d3d12dad4ca`.
 The checkpoint contains the architecture configuration, EMA denoiser,
 training-set latent mean/std, and all states needed for inference.
 
@@ -149,8 +158,19 @@ degradation. The exact final launch used four DDP ranks, a per-GPU batch of 24
 (global batch 96), and precomputed five-second latent pairs:
 
 ```bash
-PRECOMPUTED_ROOT=/path/to/fos_precomputed \
-FOS_CLEAN_ROOT=/path/to/public_classical_orchestral_plus_sections \
+python main.py precompute \
+  --source-dir data/public_classical_orchestral_plus_sections \
+  --manifest data/public_classical_orchestral_plus_sections/MANIFEST.tsv \
+  --noise-dir data/gramophone_record_noise \
+  --output-root data/fos_precomputed
+```
+
+See [`docs/precompute.md`](docs/precompute.md) for source preparation, manifest
+schema, defaults, and split guarantees. Then run:
+
+```bash
+PRECOMPUTED_ROOT=data/fos_precomputed \
+FOS_CLEAN_ROOT=data/public_classical_orchestral_plus_sections \
 scripts/train_samecfm40_fos_4gpu.sh
 ```
 
@@ -196,9 +216,8 @@ unpacking. A different input dataset may be substituted in the second command.
 ## Checkpoints and audio demos
 
 The small public listening examples are already bundled in [`demo/`](demo/),
-so a separate `examples/` directory is unnecessary. Large model weights will
-be hosted in a versioned archival release rather than Git and published with
-their exact filename, license, configuration, and SHA-256 checksum.
+so a separate `examples/` directory is unnecessary. The model weight is a
+versioned GitHub Release asset rather than part of ordinary Git history.
 
 ## Limitations
 

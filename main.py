@@ -105,6 +105,43 @@ def ls(args):
     Experiment.list_experiments(root=args.exp_root)
 
 
+def precompute(args):
+    """Build the normalized latent-pair cache consumed by Trainer."""
+    from restor.data_precompute import data_precompute
+
+    with open(args.config) as f:
+        cfg = yaml.safe_load(f)
+    cfg["dataset"]["root"] = args.source_dir
+    cfg["dataset"]["segment_duration"] = args.segment_duration
+    cfg["training"]["batch_size"] = args.batch_size
+    cfg["training"]["seed"] = args.seed
+    pcfg = cfg.setdefault("precompute", {})
+    pcfg.update({
+        "multi_song_dir": args.source_dir,
+        "multi_song_output_name": os.path.basename(os.path.abspath(args.source_dir)),
+        "output_root": args.output_root,
+        "degradations_per_clean": args.degradations_per_clean,
+        "hop_fraction": args.hop_fraction,
+        "val_ratio": args.val_ratio,
+        "target_lufs": args.target_lufs,
+        "source_loudness_scope": "whole_song_pre_normalized",
+        "latent_stats_scope": "train_windows",
+        "simple_output_layout": True,
+    })
+    if args.manifest:
+        pcfg["multi_song_manifest"] = args.manifest
+        pcfg["related_view_split"] = "aligned_recording_views"
+    else:
+        pcfg["related_view_split"] = "independent_sources"
+    if args.noise_dir:
+        cfg["corruption"]["gramophone_noise"]["noise_dir"] = args.noise_dir
+
+    random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
+    data_precompute(cfg).build_data_mult_song()
+
+
 def main():
     parser = argparse.ArgumentParser(description="restor – latent-space audio denoiser")
     parser.add_argument("--exp-root", default="experiments",
@@ -139,6 +176,27 @@ def main():
         help="Seed for the CFM Gaussian source latent (default: 42)",
     )
 
+    # -- precompute --
+    p_precompute = sub.add_parser(
+        "precompute",
+        help="Create leakage-safe five-stage SAME-L latent training pairs",
+    )
+    p_precompute.add_argument("--source-dir", required=True,
+                              help="Flat folder of clean, pre-normalized WAV files")
+    p_precompute.add_argument("--output-root", default="data/fos_precomputed")
+    p_precompute.add_argument("--manifest", default=None,
+                              help="TSV grouping aligned full-mix/section views")
+    p_precompute.add_argument("--noise-dir", default=None,
+                              help="Gramophone Record Noise Dataset WAV folder")
+    p_precompute.add_argument("--config", default="config/samecfm40_fos.yaml")
+    p_precompute.add_argument("--batch-size", type=int, default=4)
+    p_precompute.add_argument("--degradations-per-clean", type=int, default=20)
+    p_precompute.add_argument("--segment-duration", type=float, default=5.0)
+    p_precompute.add_argument("--hop-fraction", type=float, default=0.1)
+    p_precompute.add_argument("--val-ratio", type=float, default=0.1)
+    p_precompute.add_argument("--target-lufs", type=float, default=-23.0)
+    p_precompute.add_argument("--seed", type=int, default=42)
+
     # -- ls --
     sub.add_parser("ls", help="List all experiments")
 
@@ -147,6 +205,8 @@ def main():
         train(args)
     elif args.command == "infer":
         infer(args)
+    elif args.command == "precompute":
+        precompute(args)
     elif args.command == "ls":
         ls(args)
     else:
