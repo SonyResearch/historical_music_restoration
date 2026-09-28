@@ -14,6 +14,7 @@ RESTOR = Path("/data/steven/restor")
 STAGED = RESTOR / "reports/listening_test_table5/golisten_babe2_25/staged_audio"
 MANIFEST = RESTOR / "reports/listening_test_table5/golisten_babe2_25/audio_manifest.csv"
 BEHM = RESTOR / "IA_test_set_inference_outputs/behm"
+COMPOUND_MANIFEST = RESTOR / "reports/listening_test_table5/golisten_babe2_25/analysis/mosq_objective_alignment/compound_reward_demo/aa_pq_songbench_compound_iteration_000090/manifest.csv"
 
 HISTORICAL = [
     ("ballet-egyptian", "orchestra_ballet_egyptian_110", "78_ballet-egyptian-nos-1-and-2_american-symphony-orchestra-alexandre-luigini_gbia0078132a.flac", 110.0),
@@ -22,6 +23,19 @@ HISTORICAL = [
     ("minuetto", "light_minuetto_80", "78_minuetto_american-symphony-orchestra-g-bolzoni_gbia0078138a.flac", 80.0),
     ("scented-violets", "light_scented_violets_50", "78_scented-violets_peerless-orchestra-jules-reynard_gbia0178673b.flac", 50.0),
     ("lady-bird", "light_lady_bird_95", "78_lady-bird-tango_the-peerless-orchestra-p-s-robinson_gbia3038426b.flac", 95.0),
+]
+
+REWARD_COMPARISON = [
+    ("blue-danube", "orchestra_blue_danube_155"),
+    ("ballet-egyptian", "orchestra_ballet_egyptian_110"),
+    ("dance-flutes", "orchestra_dance_flutes_45"),
+    ("rigoletto", "orchestra_rigoletto_75"),
+    ("hungarian-dance", "orchestra_hungarian_dance_5_95"),
+    ("minuetto", "light_minuetto_80"),
+    ("scented-violets", "light_scented_violets_50"),
+    ("lady-bird", "light_lady_bird_95"),
+    ("caravan-105", "light_caravan_100"),
+    ("caravan-175", "light_caravan_170"),
 ]
 
 def run(*args: str) -> None:
@@ -65,6 +79,15 @@ def common_gains() -> dict[str, float]:
     return gains
 
 
+def compound_outputs() -> dict[str, Path]:
+    with COMPOUND_MANIFEST.open(newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    expected_sha256 = "1ebb78ed961d0bd625bdd82ba9163f542eb557578f6288a5b514753e05ca0c0b"
+    if len(rows) != 10 or {row["checkpoint_sha256"] for row in rows} != {expected_sha256}:
+        raise RuntimeError("Compound-reward manifest does not match the selected iteration-90 checkpoint")
+    return {row["window_id"]: Path(row["audio_path"]) for row in rows}
+
+
 def main() -> None:
     records: list[dict[str, object]] = []
     gains = common_gains()
@@ -83,6 +106,18 @@ def main() -> None:
             output = ROOT / "public/audio/historical" / example_id / f"{condition}.mp3"
             encode(source, output, source_offset, gain)
             records.append({"example": example_id, "condition": condition, "source": str(source), "source_offset_seconds": source_offset or 0, "applied_gain": gain, "output": str(output.relative_to(ROOT)), "sha256": sha256(output), **probe(output)})
+
+    compound = compound_outputs()
+    for example_id, window_id in REWARD_COMPARISON:
+        destinations = {
+            "input": STAGED / window_id / "INPUT.wav",
+            "samecfm": STAGED / window_id / "CFM40.wav",
+            "aa-pq-songbench": compound[window_id],
+        }
+        for condition, source in destinations.items():
+            output = ROOT / "public/audio/reward-comparison" / example_id / f"{condition}.mp3"
+            encode(source, output, gain=web_safety_gain)
+            records.append({"example": f"reward-{example_id}", "condition": condition, "source": str(source), "source_offset_seconds": 0, "applied_gain": web_safety_gain, "output": str(output.relative_to(ROOT)), "sha256": sha256(output), **probe(output)})
 
     manifest_dir = ROOT / "data/generated"
     manifest_dir.mkdir(parents=True, exist_ok=True)

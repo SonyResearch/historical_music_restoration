@@ -8,7 +8,7 @@ import { PipelineDiagram } from "@/components/method/PipelineDiagram";
 import { Navbar } from "@/components/Navbar";
 import { PaperSection } from "@/components/PaperSection";
 import { MOSResults } from "@/components/results/MOSResults";
-import { historicalExamples } from "@/data/audioExamples";
+import { historicalExamples, rewardFineTuningExamples } from "@/data/audioExamples";
 
 export default function Home() {
   return (
@@ -21,6 +21,17 @@ export default function Home() {
           <div className="container">
             <div className="section-heading"><p className="eyebrow">Audio demonstration</p><h2 id="demo-title">Listen to the restoration</h2><p>Switch between versions while playback remains synchronized. Headphones recommended.</p></div>
             <AudioDemoGrid examples={historicalExamples} />
+          </div>
+        </section>
+
+        <section className="section reward-audio-section" id="reward-demo" aria-labelledby="reward-demo-title">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">Reward fine-tuning</p>
+              <h2 id="reward-demo-title">AA-PQ + SongBench comparison</h2>
+              <p>All ten MOS-Q excerpts rendered with the selected iteration-90 compound-reward checkpoint. Switch between the historical input, base SAMECFM, and the reward-fine-tuned output while playback remains synchronized.</p>
+            </div>
+            <AudioDemoGrid examples={rewardFineTuningExamples} />
           </div>
         </section>
 

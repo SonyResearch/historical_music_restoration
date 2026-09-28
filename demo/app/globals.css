@@ -67,6 +67,7 @@ img { max-width: 100%; height: auto; }
 .audio-section { color: #f7f3ec; background: var(--ink); }
 .audio-section .section-heading p:last-child { color: #b9c0c3; }
 .audio-section .eyebrow { color: #e0a8ad; }
+.reward-audio-section { background: #f5f0e8; }
 .filter-tabs { display: inline-flex; gap: .25rem; margin-bottom: 1.4rem; border: 1px solid var(--line); border-radius: 999px; padding: .24rem; background: var(--paper); }
 .filter-tabs button { min-height: 36px; border: 0; border-radius: 999px; padding: .38rem .85rem; background: transparent; color: var(--muted); font-size: .75rem; font-weight: 750; }
 .filter-tabs button.active { color: white; background: var(--ink); }
@@ -78,7 +79,7 @@ img { max-width: 100%; height: auto; }
 .audio-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .3rem .75rem; color: var(--muted); font-size: .7rem; }
 .audio-meta a { display: inline-flex; align-items: center; gap: .2rem; color: var(--accent); font-weight: 750; }
 .comparison-player { border-top: 1px solid #e9e5de; background: #fbfaf7; padding: .9rem 1.2rem 1rem; }
-.condition-tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .35rem; }
+.condition-tabs { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: .35rem; }
 .condition-tab { position: relative; min-height: 39px; border: 1px solid transparent; border-radius: 7px; padding: .42rem .45rem; background: #ece9e3; color: #5a6165; font-size: .68rem; font-weight: 750; transition: background .15s ease, border-color .15s ease; }
 .condition-tab:hover { background: #e4dfd7; }
 .condition-tab.active { border-color: var(--ink); background: white; color: var(--ink); box-shadow: 0 2px 7px rgb(0 0 0 / 7%); }
