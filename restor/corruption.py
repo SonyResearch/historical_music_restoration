@@ -53,7 +53,7 @@ References:
   - Unsupervised Estimation of Nonlinear Audio Effects (arXiv 2504.04751):
       https://arxiv.org/pdf/2504.04751
   - Gramophone Record Noise Dataset:
-      https://github.com/eloimoliner/gramophone-record-noise-dataset
+      https://github.com/eloimoliner/denoising-historical-recordings
 """
 import os
 import random
@@ -410,7 +410,7 @@ class AudioCorruptor:
                 raise FileNotFoundError(
                     f"No .wav files found in gramophone noise_dir: {noise_dir}\n"
                     "Download the Gramophone Record Noise Dataset from:\n"
-                    "  https://github.com/eloimoliner/gramophone-record-noise-dataset"
+                    "  scripts/download_gramophone_noise.sh"
                 )
         else:
             # TODO: set `corruption.gramophone_noise.noise_dir` in
@@ -893,7 +893,7 @@ class AudioCorruptor:
 
         ⚠  PLACEHOLDER — requires the noise dataset to be downloaded:
            1. Download from:
-                https://github.com/eloimoliner/gramophone-record-noise-dataset
+                scripts/download_gramophone_noise.sh
            2. Set `corruption.gramophone_noise.noise_dir` in config/default.yaml
               to the local path of the directory containing the .wav files.
 
@@ -914,7 +914,7 @@ class AudioCorruptor:
                 "  corruption.gramophone_noise.noise_dir\n"
                 "to be set in config/default.yaml.\n"
                 "Download the dataset from:\n"
-                "  https://github.com/eloimoliner/gramophone-record-noise-dataset"
+                "  scripts/download_gramophone_noise.sh"
             )
 
         # One flag controls both Trainer stage timing and this fine-grained

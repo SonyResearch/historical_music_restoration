@@ -83,9 +83,11 @@ distributions are in
 | 5 | Real gramophone surface noise | Random segment from the Gramophone Record Noise Dataset; SNR `N(11,4.5)` dB clipped to [2,20] dB |
 
 Stage 5 uses Eloi Moliner's
-[Gramophone Record Noise Dataset](https://github.com/eloimoliner/gramophone-record-noise-dataset).
-Clone or download that repository and pass its WAV directory to
-`main.py precompute --noise-dir`.
+[Gramophone Record Noise Dataset](http://research.spa.aalto.fi/publications/papers/icassp22-denoising/media/datasets/Gramophone_Record_Noise_Dataset.zip),
+linked by its
+[official source repository](https://github.com/eloimoliner/denoising-historical-recordings).
+Download it with `scripts/download_gramophone_noise.sh`, then pass its output
+directory to `main.py precompute --noise-dir`.
 
 The two EQ curves are independently sampled and use log-frequency
 interpolation. They form a Wiener–Hammerstein sequence around the static
@@ -138,11 +140,10 @@ Its expected SHA-256 is
 ## Precompute training pairs
 
 Put clean 44.1-kHz WAV files in one directory. Then download the stage-5 noise
-dataset and build the cache:
+dataset (about 1.2 GB) and build the cache:
 
 ```bash
-git clone https://github.com/eloimoliner/gramophone-record-noise-dataset \
-  data/gramophone_record_noise
+scripts/download_gramophone_noise.sh
 
 python main.py precompute \
   --source-dir data/public_classical_orchestral_plus_sections \

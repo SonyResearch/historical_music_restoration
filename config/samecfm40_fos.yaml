@@ -76,7 +76,7 @@ corruption:
     high_slope_min_dboct: 12.0
     high_slope_max_dboct: 60.0
   gramophone_noise:
-    # Dataset: https://github.com/eloimoliner/gramophone-record-noise-dataset
+    # Source: https://github.com/eloimoliner/denoising-historical-recordings
     noise_dir: data/gramophone_record_noise
     snr_mean_db: 11.0
     snr_std_db: 4.5

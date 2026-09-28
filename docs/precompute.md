@@ -13,8 +13,16 @@ placing it there. Windows are intentionally not loudness-normalized
 individually, so within-song dynamics are preserved.
 
 Download the
-[Gramophone Record Noise Dataset](https://github.com/eloimoliner/gramophone-record-noise-dataset)
-separately and pass the folder containing its WAV files with `--noise-dir`.
+[Gramophone Record Noise Dataset](http://research.spa.aalto.fi/publications/papers/icassp22-denoising/media/datasets/Gramophone_Record_Noise_Dataset.zip)
+linked by its
+[official source repository](https://github.com/eloimoliner/denoising-historical-recordings):
+
+```bash
+scripts/download_gramophone_noise.sh
+```
+
+The helper resumes the 1.2 GB download, verifies SHA-256, and extracts it to
+`data/gramophone_record_noise`. Pass that directory with `--noise-dir`.
 
 For FOS data, provide a tab-separated manifest with one row per WAV and these
 columns:
