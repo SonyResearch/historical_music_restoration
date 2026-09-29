@@ -1,5 +1,8 @@
 # End-to-End Historical Music Restoration in Latent Space
 
+[![Interactive Demo](https://img.shields.io/badge/Interactive-Demo-2ea44f?style=flat&logo=vercel&logoColor=white)](https://full-mix-historical-music-restorati.vercel.app/)
+![arXiv: TBD](https://img.shields.io/badge/arXiv-TBD-b31b1b?style=flat&logo=arxiv&logoColor=white)
+
 Official implementation and evaluation resources for **End-to-End Historical Music Restoration in Latent Space**.
 
 This repository studies historical music restoration as conditional flow matching in the continuous latent space of the frozen [SAME-L](https://huggingface.co/stabilityai/SAME-L) audio autoencoder. The proposed 40M-parameter model, **SAMECFM**, maps degraded historical-audio latents toward clean musical-audio latents and decodes the restored representation at 44.1 kHz.
@@ -8,7 +11,7 @@ This repository studies historical music restoration as conditional flow matchin
 > aggregate subjective results, published test set, and SAMECFM-40M checkpoint
 > are included. The arXiv identifier is forthcoming.
 
-**[Interactive demo](https://full-mix-historical-music-restorati.vercel.app)** · **[Paper PDF](paper/full_mix_historical_music_restoration.pdf)** · **[Published dataset](https://doi.org/10.5281/zenodo.22737610)**
+[Paper PDF](paper/full_mix_historical_music_restoration.pdf) · [Published dataset](https://doi.org/10.5281/zenodo.22737610)
 
 ## Quickstart: restore one file
 
