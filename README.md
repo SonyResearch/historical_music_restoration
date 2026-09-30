@@ -1,7 +1,9 @@
 # End-to-End Historical Music Restoration in Latent Space
 
-[![Interactive Demo](https://img.shields.io/badge/Interactive-Demo-2ea44f?style=flat&logo=vercel&logoColor=white)](https://full-mix-historical-music-restorati.vercel.app/)
+[![Demo](https://img.shields.io/badge/Demo-2ea44f?style=flat&logo=vercel&logoColor=white)](https://full-mix-historical-music-restorati.vercel.app/)
 ![arXiv: TBD](https://img.shields.io/badge/arXiv-TBD-b31b1b?style=flat&logo=arxiv&logoColor=white)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)](LICENSE)
 
 Official implementation and evaluation resources for **End-to-End Historical Music Restoration in Latent Space**.
 
@@ -13,7 +15,7 @@ This repository studies historical music restoration as conditional flow matchin
 
 [Paper PDF](paper/full_mix_historical_music_restoration.pdf) · [Published dataset](https://doi.org/10.5281/zenodo.22737610)
 
-## Quickstart: restore one file
+## 🚀 Quickstart: restore one file
 
 Python 3.11 and an NVIDIA GPU are recommended. Accept the
 [SAME-L license](https://huggingface.co/stabilityai/SAME-L), then run:
@@ -40,7 +42,7 @@ downloads, and verifies its SHA-256. The restored WAV is written below
 | Train on one GPU | `scripts/train_samecfm40_fos.sh` |
 | Reproduce the paper launch on four GPUs | `scripts/train_samecfm40_fos_4gpu.sh` |
 
-## Method
+## 🧠 Method
 
 ```text
 historical audio -> frozen SAME-L encoder -> degraded latent
@@ -97,7 +99,7 @@ interpolation. They form a Wiener–Hammerstein sequence around the static
 nonlinearity. Filtering is zero phase to retain temporal alignment between
 each degraded input and its clean target. White-noise augmentation is not used.
 
-## Repository layout
+## 🗂️ Repository layout
 
 ```text
 .
@@ -115,7 +117,7 @@ each degraded input and its clean target. White-noise augmentation is not used.
 
 No private listening-test responses, credentials, training data, inference corpora, or model checkpoints are stored in this repository.
 
-## Interactive demo
+## 🎧 Demo
 
 The static site under [`demo/`](demo/) contains six synchronized historical comparisons, the method diagram, and aggregate subjective results. Run it locally with Node.js 22:
 
@@ -127,7 +129,7 @@ npm run dev
 
 For Vercel, import this repository and set the project **Root Directory** to `demo`. No server, environment variables, or runtime inference are required.
 
-## Inference options
+## 🎛️ Inference options
 
 The launcher accepts one file or recursively processes a directory. It uses the
 paper settings: ten uniform Euler steps, CFG 1.0, and seed 42. Override
@@ -140,7 +142,7 @@ The checkpoint is also available on the
 Its expected SHA-256 is
 `2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3`.
 
-## Precompute training pairs
+## 🧪 Precompute training pairs
 
 Put clean 44.1-kHz WAV files in one directory. Then download the stage-5 noise
 dataset (about 1.2 GB) and build the cache:
@@ -161,7 +163,7 @@ aligned full-mix and section views in the same song-level split. See
 [`docs/precompute.md`](docs/precompute.md) for its simple TSV schema and all
 defaults.
 
-## Train
+## 🏋️ Train
 
 The default launcher is one-GPU friendly and starts with batch size 4:
 
@@ -188,7 +190,7 @@ The downloadable checkpoint initializes the model and EMA for a new optimizer
 run. It is not an optimizer-level resume checkpoint. The published Zenodo
 archive below is an unpaired evaluation set, not training data.
 
-## Evaluation
+## 📊 Evaluation
 
 The paper evaluates restoration on:
 
@@ -199,7 +201,7 @@ The paper evaluates restoration on:
 
 Aggregate subjective results are provided under [`results/`](results/). The sensitivity-analysis folder retains listeners whose mean score over four clean ground-truth quality items is at least 4. Individual listener data are intentionally excluded.
 
-## Dataset
+## 💿 Dataset
 
 The published historical unpaired test set contains 149 full-length recordings totaling **9.30 hours**: 70 Full-Orchestra and 79 Light Orchestra items. It is available from Zenodo at DOI [`10.5281/zenodo.22737610`](https://doi.org/10.5281/zenodo.22737610).
 
@@ -218,20 +220,20 @@ The downloader fetches the official `audio_orchestra_70.zip`,
 from Zenodo record 22737610 and checks the published SHA-256 values before
 unpacking. A different input dataset may be substituted in the second command.
 
-## Checkpoints and audio demos
+## 🔊 Checkpoints and audio demos
 
 The small public listening examples are already bundled in [`demo/`](demo/),
 so a separate `examples/` directory is unnecessary. The model weight is a
 versioned GitHub Release asset rather than part of ordinary Git history.
 
-## Limitations
+## ⚠️ Limitations
 
 - The system is designed for instrumental historical classical recordings represented by the paper's training degradations.
 - Restoration quality may decline for degradations or musical domains outside the training distribution.
 - SAME-L licensing is separate from this repository's MIT-licensed code.
 - Generative restoration can alter fine musical details; restored audio should not be treated as an archival ground-truth reconstruction.
 
-## Citation
+## 📝 Citation
 
 If you use this work, please cite the paper and the accompanying dataset. Final bibliographic metadata will replace the placeholder below when the arXiv record is available.
 
@@ -244,10 +246,10 @@ If you use this work, please cite the paper and the accompanying dataset. Final 
 }
 ```
 
-## License
+## 📄 License
 
 The original code in this repository is released under the [MIT License](LICENSE). Third-party models, datasets, and evaluation packages retain their own licenses.
 
-## Contact
+## 📬 Contact
 
 Steven Cho — [ORCID 0009-0008-0040-9312](https://orcid.org/0009-0008-0040-9312)
