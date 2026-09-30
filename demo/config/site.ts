@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     "Audio demonstrations and results for latent-space restoration of historical orchestral recordings.",
   paperUrl: "https://github.com/SonyResearch/historical_music_restoration/blob/main/paper/full_mix_historical_music_restoration.pdf",
-  githubUrl: "https://github.com/stevencho24/End-to-End_historical_music_restoration",
+  githubUrl: "https://github.com/SonyResearch/historical_music_restoration",
   datasetUrl: "https://doi.org/10.5281/zenodo.22737610",
   datasetStatus: "Published on Zenodo",
   arxivUrl: "",

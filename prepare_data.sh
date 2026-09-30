@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DESTINATION="${CHECKPOINT:-$ROOT_DIR/checkpoints/samecfm_40m_fos.pt}"
-URL="${CHECKPOINT_URL:-https://github.com/stevencho24/End-to-End_historical_music_restoration/releases/download/v1.0.0/samecfm_40m_fos.pt}"
+URL="${CHECKPOINT_URL:-https://github.com/SonyResearch/historical_music_restoration/releases/download/v1.0.0/samecfm_40m_fos.pt}"
 EXPECTED_SHA256="${CHECKPOINT_SHA256:-2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3}"
 
 mkdir -p "$(dirname "$DESTINATION")"

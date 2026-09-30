@@ -21,7 +21,7 @@ Python 3.11 and an NVIDIA GPU are recommended. Accept the
 [SAME-L license](https://huggingface.co/stabilityai/SAME-L), then run:
 
 ```bash
-git clone https://github.com/stevencho24/End-to-End_historical_music_restoration.git
+git clone https://github.com/SonyResearch/historical_music_restoration.git
 cd End-to-End_historical_music_restoration
 python -m venv .venv
 source .venv/bin/activate
@@ -138,7 +138,7 @@ with environment variables. Arbitrary-length input is converted to 44.1-kHz
 mono and processed with overlap-add.
 
 The checkpoint is also available on the
-[v1.0.0 release page](https://github.com/stevencho24/End-to-End_historical_music_restoration/releases/tag/v1.0.0).
+[v1.0.0 release page](https://github.com/SonyResearch/historical_music_restoration/releases/tag/v1.0.0).
 Its expected SHA-256 is
 `2b13d250a66e3c640a52d3b5969951fd6d7a1336b5b5bd97770b28c5707f7ae3`.
 
