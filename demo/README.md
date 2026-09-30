@@ -61,16 +61,16 @@ Provenance-only source paths may retain the legacy `fms` experiment identifier; 
 
 The Method section renders the paper pipeline figure from `public/figures/finalICASSPgood_qual.png` at the full content width.
 
-## Add the paper
+## Paper link
 
-Replace `public/paper.pdf`. The paper link is controlled by `paperUrl` in [`config/site.ts`](config/site.ts); an empty URL hides the control.
+The demo links to the canonical PDF in the repository through `paperUrl` in [`config/site.ts`](config/site.ts). Do not place a duplicate PDF under `public/`; an empty URL hides the control.
 
 ## Configure external links
 
 Edit [`config/site.ts`](config/site.ts):
 
 ```ts
-paperUrl: "/paper.pdf",
+paperUrl: "https://github.com/SonyResearch/historical_music_restoration/blob/main/paper/full_mix_historical_music_restoration.pdf",
 githubUrl: "https://github.com/stevencho24/End-to-End_historical_music_restoration",
 datasetUrl: "https://doi.org/10.5281/zenodo.22737610",
 arxivUrl: "",
