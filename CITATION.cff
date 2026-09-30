@@ -18,5 +18,5 @@ authors:
     given-names: Eloi
   - family-names: Mitsufuji
     given-names: Yuki
-repository-code: https://github.com/stevencho24/End-to-End_historical_music_restoration
+repository-code: https://github.com/SonyResearch/historical_music_restoration
 license: MIT
