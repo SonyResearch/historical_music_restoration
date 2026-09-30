@@ -14,8 +14,6 @@ This repository studies historical music restoration as conditional flow matchin
 > aggregate subjective results, published test set, and SAMECFM-40M checkpoint
 > are included. The arXiv identifier is forthcoming.
 
-[Paper PDF](paper/full_mix_historical_music_restoration.pdf) · [Published dataset](https://doi.org/10.5281/zenodo.22737610)
-
 ## 🚀 Quickstart: restore one file
 
 Python 3.11 and an NVIDIA GPU are recommended. Accept the
